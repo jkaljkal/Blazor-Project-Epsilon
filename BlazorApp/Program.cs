@@ -32,7 +32,8 @@ else
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.MapControllers();
 app.UseStaticFiles();
 app.UseAntiforgery();
 

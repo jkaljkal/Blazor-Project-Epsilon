@@ -10,6 +10,6 @@ namespace BlazorApp.Repositories.Intefaces
 
         Task<Customer> UpdateCustomerAsync(Customer customer);
 
-        Task<Customer> RemoveCustomerAsync(int id);
+        Task<Customer> RemoveCustomerAsync(string id);
     }
 }

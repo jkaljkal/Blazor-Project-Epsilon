@@ -16,7 +16,8 @@ namespace BlazorApp.Repositories.Implementations
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return await _mainContext.Customers.ToListAsync();
+            var result = await _mainContext.Customers.ToListAsync();
+            return result;
         }
 
         public async Task<Customer> AddCustomerAsync(Customer customer)
@@ -31,7 +32,7 @@ namespace BlazorApp.Repositories.Implementations
 
             if (existingCustomer != null)
             {
-                Console.WriteLine("Customer with id: " + customer.Id + " already exists.");
+                Console.WriteLine("Customer with Id: " + customer.Id + " already exists.");
                 throw new InvalidOperationException();
             }
 
@@ -47,7 +48,7 @@ namespace BlazorApp.Repositories.Implementations
 
             if (existingCustomer == null)
             {
-                Console.WriteLine("Customer with id: " + " not exists.");
+                Console.WriteLine("Customer with Id: " + " not exists.");
                 throw new InvalidOperationException();
             }
 
@@ -57,7 +58,7 @@ namespace BlazorApp.Repositories.Implementations
             return existingCustomer;
         }
 
-        public async Task<Customer> RemoveCustomerAsync(int id)
+        public async Task<Customer> RemoveCustomerAsync(string id)
         {
             var existingCustomer = await _mainContext.Customers.FindAsync(id);
 
