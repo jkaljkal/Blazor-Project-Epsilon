@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using BlazorApp.Components;
 using BlazorApp.Data;
 using BlazorApp.Repositories.Implementations;
@@ -15,7 +16,8 @@ builder.Services.AddSingleton<WeatherForecastService>();
 // Add controllers, repositories and dbcontext
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddDbContext<MainContext>();
+builder.Services.AddDbContext<MainContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 var app = builder.Build();
 
