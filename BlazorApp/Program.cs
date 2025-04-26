@@ -1,5 +1,7 @@
 using BlazorApp.Components;
 using BlazorApp.Data;
+using BlazorApp.Repositories.Implementations;
+using BlazorApp.Repositories.Intefaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddSingleton<WeatherForecastService>();
+
+// Add controllers, repositories and dbcontext
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddDbContext<MainContext>();
 
 var app = builder.Build();
 
