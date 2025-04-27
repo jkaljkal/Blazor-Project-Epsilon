@@ -28,7 +28,7 @@ namespace BlazorApp.Repositories.Implementations
                 throw new InvalidOperationException();
             }
 
-            var existingCustomer = await _mainContext.Customers.FindAsync(customer);
+            var existingCustomer = await _mainContext.Customers.FindAsync(customer.Id);
 
             if (existingCustomer != null)
             {
@@ -44,7 +44,7 @@ namespace BlazorApp.Repositories.Implementations
 
         public async Task<Customer> UpdateCustomerAsync(Customer customer)
         {
-            var existingCustomer = await _mainContext.Customers.FindAsync(customer);
+            var existingCustomer = await _mainContext.Customers.FindAsync(customer.Id);
 
             if (existingCustomer == null)
             {
@@ -52,10 +52,13 @@ namespace BlazorApp.Repositories.Implementations
                 throw new InvalidOperationException();
             }
 
-            _mainContext.Customers.Update(customer);
+            _mainContext.Entry(existingCustomer).State = EntityState.Detached;
+            _mainContext.Customers.Attach(customer);
+            _mainContext.Entry(customer).State = EntityState.Modified;
+
             await _mainContext.SaveChangesAsync();
 
-            return existingCustomer;
+            return customer;
         }
 
         public async Task<Customer> RemoveCustomerAsync(string id)

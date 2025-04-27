@@ -23,14 +23,14 @@ namespace BlazorApp.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddCustomer(Customer customer)
+        public async Task<IActionResult> AddCustomer([FromBody] Customer customer)
         {
             var result = await _customerRepository.AddCustomerAsync(customer);
             return result != null ? Ok(result) : BadRequest();
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateCustomer(Customer customer)
+        public async Task<IActionResult> UpdateCustomer([FromBody] Customer customer)
         {
             var result = await _customerRepository.UpdateCustomerAsync(customer);
             return result != null ? Ok(result) : BadRequest();
