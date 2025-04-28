@@ -1,4 +1,5 @@
 ﻿using BlazorApp.Models;
+using BlazorApp.Models.DTO;
 
 namespace BlazorApp.Repositories.Intefaces
 {
@@ -11,5 +12,7 @@ namespace BlazorApp.Repositories.Intefaces
         Task<Customer> UpdateCustomerAsync(Customer customer);
 
         Task<Customer> RemoveCustomerAsync(string id);
+
+        Task<PagedResultDto<Customer>> GetPaginatedCustomersAsync(PaginationParameters parameters);
     }
 }

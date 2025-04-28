@@ -2,6 +2,7 @@
 using BlazorApp.Repositories.Intefaces;
 using BlazorApp.Models;
 using BlazorApp.Data;
+using BlazorApp.Models.DTO;
 
 namespace BlazorApp.Repositories.Implementations
 {
@@ -18,6 +19,25 @@ namespace BlazorApp.Repositories.Implementations
         {
             var result = await _mainContext.Customers.ToListAsync();
             return result;
+        }
+
+        public async Task<PagedResultDto<Customer>> GetPaginatedCustomersAsync(PaginationParameters parameters)
+        {
+            var totalCount = await _mainContext.Customers.CountAsync();
+
+            var items = await _mainContext.Customers
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToListAsync();
+
+            return new PagedResultDto<Customer>
+            {
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)parameters.PageSize),
+                Items = items
+            };
         }
 
         public async Task<Customer> AddCustomerAsync(Customer customer)

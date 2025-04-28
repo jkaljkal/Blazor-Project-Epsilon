@@ -22,6 +22,18 @@ namespace BlazorApp.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// URL Query parameters: pageNumber (default: 1), pageSize (default: 10)
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [HttpGet("paginated")]
+        public async Task<IActionResult> GetPaginatedCustomers([FromQuery] PaginationParameters parameters)
+        {
+            var result = await _customerRepository.GetPaginatedCustomersAsync(parameters);
+            return Ok(result);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> AddCustomer([FromBody] Customer customer)
         {
