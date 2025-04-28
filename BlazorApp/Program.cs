@@ -3,6 +3,9 @@ using BlazorApp.Components;
 using BlazorApp.Data;
 using BlazorApp.Repositories.Implementations;
 using BlazorApp.Repositories.Intefaces;
+using BlazorApp.Models;
+using BlazorApp.Services.Implementations;
+using BlazorApp.Services.Intefaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +19,19 @@ builder.Services.AddSingleton<WeatherForecastService>();
 // Add controllers, repositories and dbcontext
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPrintNameService, PrintNameService>();
+
 builder.Services.AddDbContext<MainContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
+builder.Services.AddLogging();
+
 var app = builder.Build();
+
+// test Employee/Manager class
+var serviceProvider = builder.Services.BuildServiceProvider();
+serviceProvider.GetRequiredService<IPrintNameService>()
+    .PrintName(new Employee("John Kalogeropoulos"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
