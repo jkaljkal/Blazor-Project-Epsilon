@@ -25,6 +25,10 @@ builder.Services.AddDbContext<MainContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 builder.Services.AddLogging();
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"])
+});
 
 var app = builder.Build();
 
