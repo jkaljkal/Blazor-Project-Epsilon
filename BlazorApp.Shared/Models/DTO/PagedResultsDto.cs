@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Models.DTO
+﻿namespace BlazorApp.Shared.Models.DTO
 {
     public class PagedResultDto<T>
     {

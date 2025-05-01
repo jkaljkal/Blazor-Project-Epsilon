@@ -1,6 +1,6 @@
 ﻿using BlazorApp.Models.Interfaces;
 
-namespace BlazorApp.Models
+namespace BlazorApp.Shared.Models.Entites
 {
     public class Employee : IPerson
     {

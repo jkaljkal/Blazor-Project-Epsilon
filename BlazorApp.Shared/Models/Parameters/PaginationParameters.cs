@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Models
+﻿namespace BlazorApp.Shared.Models.Parameters
 {
     public class PaginationParameters
     {

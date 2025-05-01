@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Repositories.Intefaces;
-using BlazorApp.Models;
+using BlazorApp.Shared.Models.Parameters;
+using BlazorApp.Shared.Models.Entites;
 
 namespace BlazorApp.Controllers
 {
@@ -28,7 +29,8 @@ namespace BlazorApp.Controllers
         /// <param name="parameters"></param>
         /// <returns></returns>
         [HttpGet("paginated")]
-        public async Task<IActionResult> GetPaginatedCustomers([FromQuery] PaginationParameters parameters)
+        public async Task<IActionResult> GetPaginatedCustomers(
+            [FromQuery] PaginationParameters parameters)
         {
             var result = await _customerRepository.GetPaginatedCustomersAsync(parameters);
             return Ok(result);

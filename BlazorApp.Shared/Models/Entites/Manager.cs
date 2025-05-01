@@ -1,6 +1,8 @@
-﻿namespace BlazorApp.Models
+﻿using BlazorApp.Models.Interfaces;
+
+namespace BlazorApp.Shared.Models.Entites
 {
-    public class Manager
+    public class Manager: IPerson
     {
         public Manager(string name)
         {

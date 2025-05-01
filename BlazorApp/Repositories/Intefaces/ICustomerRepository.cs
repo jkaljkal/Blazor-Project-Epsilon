@@ -1,5 +1,6 @@
-﻿using BlazorApp.Models;
-using BlazorApp.Models.DTO;
+﻿using BlazorApp.Shared.Models.Entites;
+using BlazorApp.Shared.Models.DTO;
+using BlazorApp.Shared.Models.Parameters;
 
 namespace BlazorApp.Repositories.Intefaces
 {

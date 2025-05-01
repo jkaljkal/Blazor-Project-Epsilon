@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BlazorApp.Repositories.Intefaces;
-using BlazorApp.Models;
+using BlazorApp.Shared.Models.Entites;
 using BlazorApp.Data;
-using BlazorApp.Models.DTO;
+using BlazorApp.Shared.Models.DTO;
+using BlazorApp.Shared.Models.Parameters;
 
 namespace BlazorApp.Repositories.Implementations
 {

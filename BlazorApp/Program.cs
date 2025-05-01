@@ -3,7 +3,7 @@ using BlazorApp.Components;
 using BlazorApp.Data;
 using BlazorApp.Repositories.Implementations;
 using BlazorApp.Repositories.Intefaces;
-using BlazorApp.Models;
+using BlazorApp.Shared.Models.Entites;
 using BlazorApp.Services.Implementations;
 using BlazorApp.Services.Intefaces;
 
@@ -25,10 +25,7 @@ builder.Services.AddDbContext<MainContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 builder.Services.AddLogging();
-builder.Services.AddScoped(sp => new HttpClient
-{
-    BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"])
-});
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

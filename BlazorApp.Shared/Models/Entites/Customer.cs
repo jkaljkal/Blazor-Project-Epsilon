@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Models
+﻿namespace BlazorApp.Shared.Models.Entites
 {
     public class Customer
     {
