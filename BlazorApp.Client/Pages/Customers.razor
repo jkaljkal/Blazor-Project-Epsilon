@@ -1,0 +1,134 @@
+﻿@page "/customers"
+@rendermode InteractiveWebAssembly
+@using BlazorApp.Shared.Models.Entites
+@using BlazorApp.Shared.Models.DTO
+@using BlazorApp.Shared.Models.Parameters
+@using BlazorApp.Client.Components
+
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+
+<PageTitle>Customers</PageTitle>
+
+<h1>Customers</h1>
+
+@if (dataProvider == null)
+{
+    <LoadingText Text ="Waiting for data..."></LoadingText>
+}
+
+<Grid TItem="Customer"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="CustomersDataProvider"
+      AllowFiltering="false"
+      AllowPaging="true"
+      PageSize="3"
+      AllowSorting="false"
+      AllowSelection="false"
+      SelectionMode="GridSelectionMode.Multiple"
+      Responsive="true">
+
+    <GridColumns>
+        <GridColumn TItem="Customer" HeaderText="CompanyName" PropertyName="CompanyName" SortKeySelector="item => item.CompanyName">
+            @context.CompanyName
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="ContactName" PropertyName="ContactName" SortKeySelector="item => item.ContactName">
+            @context.ContactName
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="Address" PropertyName="Address">
+            @context.Address
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="City" PropertyName="City" SortKeySelector="item => item.City">
+            @context.City
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="Region" PropertyName="Region" SortKeySelector="item => item.Region">
+            @context.Region
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="PostalCode" PropertyName="PostalCode" SortKeySelector="item => item.PostalCode">
+            @context.PostalCode
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="Country" PropertyName="Country" SortKeySelector="item => item.Country">
+            @context.Country
+        </GridColumn>
+        <GridColumn TItem="Customer" HeaderText="Phone" PropertyName="Phone">
+            @context.Phone
+        </GridColumn>
+    </GridColumns>
+
+</Grid>
+
+@code {
+    private GridDataProviderResult<Customer>? dataProvider = null;
+    private int currentPage = 1;
+
+    private async Task<GridDataProviderResult<Customer>> CustomersDataProvider(GridDataProviderRequest<Customer> request)
+    {
+        if (dataProvider != null && currentPage == request.PageNumber)
+        {
+            return dataProvider;
+        }
+        try
+        {
+            var parameters = new PaginationParameters
+            {
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+
+            currentPage = parameters.PageNumber;
+
+            var result = await GetCustomersAsync(parameters);
+            dataProvider = new GridDataProviderResult<Customer>
+            {
+                Data = result.Items,
+                TotalCount = result.TotalCount
+            };
+            await InvokeAsync(() => StateHasChanged());
+            return dataProvider;
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", ex.Message);
+
+            dataProvider = new GridDataProviderResult<Customer>
+            {
+                Data = new List<Customer>(),
+                TotalCount = 0
+            };
+            return dataProvider;
+        }
+    }
+
+    private async Task<PagedResultDto<Customer>> GetCustomersAsync(PaginationParameters parameters)
+    {
+        try
+        {
+            var queryString = $"?PageNumber={parameters.PageNumber}&PageSize={parameters.PageSize}";
+
+            string url = $"/api/customer/paginated{queryString}";
+            var result = await Http.GetFromJsonAsync<PagedResultDto<Customer>>(url);
+
+            return result ?? new PagedResultDto<Customer>
+            {
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+                TotalCount = 0,
+                TotalPages = 0,
+                Items = new List<Customer>()
+            };
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", ex.Message);
+
+            return new PagedResultDto<Customer>
+            {
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+                TotalCount = 0,
+                TotalPages = 0,
+                Items = new List<Customer>()
+            };
+        }
+    }
+}
